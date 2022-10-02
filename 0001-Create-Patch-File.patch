@@ -1,0 +1,216 @@
+From a3d2ad1679d2b78bda64d42a13a7201a4d93f671 Mon Sep 17 00:00:00 2001
+From: Pathivada Arun <arunpathivada143@gmail.com>
+Date: Sun, 2 Oct 2022 06:42:29 +0100
+Subject: [PATCH] Create Patch File
+
+---
+ .vscode/launch.json | 23 +++++++++++++++++++++++
+ package-lock.json   | 34 ++++++++++++++++++++++++++++++++++
+ package.json        |  1 +
+ src/App.tsx         | 23 +++++++++++++++++------
+ src/Graph.tsx       | 12 ++++++++----
+ 5 files changed, 83 insertions(+), 10 deletions(-)
+ create mode 100644 .vscode/launch.json
+
+diff --git a/.vscode/launch.json b/.vscode/launch.json
+new file mode 100644
+index 0000000..a3ef0ea
+--- /dev/null
++++ b/.vscode/launch.json
+@@ -0,0 +1,23 @@
++{
++    // Use IntelliSense to learn about possible attributes.
++    // Hover to view descriptions of existing attributes.
++    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
++    "version": "0.2.0",
++    "configurations": [
++        {
++            "name": "Run Windows Hermes - Experimental",
++            "request": "launch",
++            "type": "reactnativedirect",
++            "cwd": "${workspaceFolder}",
++            "enableDebug": false,
++            "platform": "windows"
++        },
++        {
++            "type": "pwa-chrome",
++            "request": "launch",
++            "name": "Launch Chrome against localhost",
++            "url": "http://localhost:8080",
++            "webRoot": "${workspaceFolder}"
++        }
++    ]
++}
+\ No newline at end of file
+diff --git a/package-lock.json b/package-lock.json
+index 21b4315..236a0f7 100644
+--- a/package-lock.json
++++ b/package-lock.json
+@@ -17,6 +17,7 @@
+         "@types/react": "^16.9.0",
+         "@types/react-dom": "^16.0.11",
+         "bootstrap": "^4.2.1",
++        "node": "^18.10.0",
+         "puppeteer": "^1.19.0",
+         "react": "^16.9.0",
+         "react-dom": "^16.9.0",
+@@ -12088,6 +12089,26 @@
+         "lower-case": "^1.1.1"
+       }
+     },
++    "node_modules/node": {
++      "version": "18.10.0",
++      "resolved": "https://registry.npmjs.org/node/-/node-18.10.0.tgz",
++      "integrity": "sha512-MzDb4jEaBYQoXoQQHalG5jOs7V4VUGB39/BJDSpPZo9mkRUO0y1rclJCNm5667YykgKVUHXK3P2zSpr/w4NO8w==",
++      "hasInstallScript": true,
++      "dependencies": {
++        "node-bin-setup": "^1.0.0"
++      },
++      "bin": {
++        "node": "bin/node"
++      },
++      "engines": {
++        "npm": ">=5.0.0"
++      }
++    },
++    "node_modules/node-bin-setup": {
++      "version": "1.1.0",
++      "resolved": "https://registry.npmjs.org/node-bin-setup/-/node-bin-setup-1.1.0.tgz",
++      "integrity": "sha512-pTeU6NgUrexiLNtd+AKwvg6cngHMvj5FZ5e2bbv2ogBSIc9yhkXSSaTScfSRZnwHIh5YFmYSYlemLWkiKD7rog=="
++    },
+     "node_modules/node-forge": {
+       "version": "0.10.0",
+       "resolved": "https://registry.npmjs.org/node-forge/-/node-forge-0.10.0.tgz",
+@@ -29770,6 +29791,19 @@
+         "lower-case": "^1.1.1"
+       }
+     },
++    "node": {
++      "version": "18.10.0",
++      "resolved": "https://registry.npmjs.org/node/-/node-18.10.0.tgz",
++      "integrity": "sha512-MzDb4jEaBYQoXoQQHalG5jOs7V4VUGB39/BJDSpPZo9mkRUO0y1rclJCNm5667YykgKVUHXK3P2zSpr/w4NO8w==",
++      "requires": {
++        "node-bin-setup": "^1.0.0"
++      }
++    },
++    "node-bin-setup": {
++      "version": "1.1.0",
++      "resolved": "https://registry.npmjs.org/node-bin-setup/-/node-bin-setup-1.1.0.tgz",
++      "integrity": "sha512-pTeU6NgUrexiLNtd+AKwvg6cngHMvj5FZ5e2bbv2ogBSIc9yhkXSSaTScfSRZnwHIh5YFmYSYlemLWkiKD7rog=="
++    },
+     "node-forge": {
+       "version": "0.10.0",
+       "resolved": "https://registry.npmjs.org/node-forge/-/node-forge-0.10.0.tgz",
+diff --git a/package.json b/package.json
+index ca234e9..3c0fb0c 100644
+--- a/package.json
++++ b/package.json
+@@ -12,6 +12,7 @@
+     "@types/react": "^16.9.0",
+     "@types/react-dom": "^16.0.11",
+     "bootstrap": "^4.2.1",
++    "node": "^18.10.0",
+     "puppeteer": "^1.19.0",
+     "react": "^16.9.0",
+     "react-dom": "^16.9.0",
+diff --git a/src/App.tsx b/src/App.tsx
+index 0728518..896feaa 100755
+--- a/src/App.tsx
++++ b/src/App.tsx
+@@ -8,6 +8,7 @@ import './App.css';
+  */
+ interface IState {
+   data: ServerRespond[],
++  showGraph:boolean
+ }
+ 
+ /**
+@@ -22,6 +23,7 @@ class App extends Component<{}, IState> {
+       // data saves the server responds.
+       // We use this state to parse data down to the child element (Graph) as element property
+       data: [],
++      showGraph:false,
+     };
+   }
+ 
+@@ -29,18 +31,27 @@ class App extends Component<{}, IState> {
+    * Render Graph react component with state.data parse as property data
+    */
+   renderGraph() {
+-    return (<Graph data={this.state.data}/>)
++    if(this.state.showGraph)
++      return (<Graph data={this.state.data}/>)
+   }
+ 
+   /**
+    * Get new data from server and update the state with the new data
+    */
+   getDataFromServer() {
+-    DataStreamer.getData((serverResponds: ServerRespond[]) => {
+-      // Update the state by creating a new array of data that consists of
+-      // Previous data in the state and the new data from server
+-      this.setState({ data: [...this.state.data, ...serverResponds] });
+-    });
++    let x = 0;
++        const interval = setInterval(() => {
++          DataStreamer.getData((serverResponds: ServerRespond[]) => {
++            this.setState({
++              data: serverResponds,
++              showGraph: true,
++            });
++          });
++          x++;
++          if (x > 1000) {
++            clearInterval(interval);
++          }
++        }, 100);
+   }
+ 
+   /**
+diff --git a/src/Graph.tsx b/src/Graph.tsx
+index 3b2a7da..6a158d4 100644
+--- a/src/Graph.tsx
++++ b/src/Graph.tsx
+@@ -14,7 +14,7 @@ interface IProps {
+  * Perspective library adds load to HTMLElement prototype.
+  * This interface acts as a wrapper for Typescript compiler.
+  */
+-interface PerspectiveViewerElement {
++ interface PerspectiveViewerElement extends HTMLElement {
+   load: (table: Table) => void,
+ }
+ 
+@@ -32,8 +32,7 @@ class Graph extends Component<IProps, {}> {
+ 
+   componentDidMount() {
+     // Get element to attach the table from the DOM.
+-    const elem: PerspectiveViewerElement = document.getElementsByTagName('perspective-viewer')[0] as unknown as PerspectiveViewerElement;
+-
++    const elem = document.getElementsByTagName('perspective-viewer')[0] as unknown as PerspectiveViewerElement;
+     const schema = {
+       stock: 'string',
+       top_ask_price: 'float',
+@@ -41,7 +40,7 @@ class Graph extends Component<IProps, {}> {
+       timestamp: 'date',
+     };
+ 
+-    if (window.perspective && window.perspective.worker()) {
++    if (window.perspective) {
+       this.table = window.perspective.worker().table(schema);
+     }
+     if (this.table) {
+@@ -49,6 +48,11 @@ class Graph extends Component<IProps, {}> {
+ 
+       // Add more Perspective configurations here.
+       elem.load(this.table);
++      elem.setAttribute('view', 'y_line');
++      elem.setAttribute('column-pivots', '["stock"]');
++      elem.setAttribute('row-pivots', '["timestamp"]');
++      elem.setAttribute('columns', '["top_ask_price"]');
++      elem.setAttribute('aggregates', '{"stock":"distinct count","top_ask_price":"avg","top_bid_price":"avg","timestamp":"distinct count"}');
+     }
+   }
+ 
+-- 
+2.37.3.windows.1
+
